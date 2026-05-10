@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #FAFAF8;
+  --color-primary: #1B3A4B;
+  --color-accent: #C9A96E;
+  --color-text: #1A1A1A;
+  --color-text-secondary: #6B7280;
+  --color-border: #E8E4DC;
+  --color-white: #FFFFFF;
+}
+
+@layer base {
+  html {
+    font-family: 'Nunito', system-ui, sans-serif;
+    color: #1A1A1A;
+    background-color: #FAFAF8;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #FAFAF8;
+    /* subtle paper texture */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@layer components {
+  .physician-card {
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  .physician-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .time-slot-btn {
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+
+  .date-chip {
+    transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+}
