@@ -14,6 +14,7 @@ export default function App() {
     <div className="min-h-screen bg-brand-bg font-body">
       <NavBar view={view} setView={setView} pendingCount={pendingCount} />
       <main className="max-w-7xl mx-auto">
+        {/* Switch between the patient booking flow and the admin dashboard. */}
         {view === 'patient' ? (
           <BookingWizard addBooking={addBooking} bookings={bookings} />
         ) : (
