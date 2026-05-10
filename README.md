@@ -54,6 +54,6 @@ An admin dashboard with no bookings looks like a broken feature, not a demo. The
 
 - **Calendar view in admin.** A table is the right starting point for information density, but physicians think in terms of their weekly schedule. A month-view calendar with color-coded appointment blocks would be more natural for daily use.
 
-- **Real availability logic.** `StepTimeSelect` generates the same 14 weekdays and 15 time slots for every physician. A production system would have physicians define weekly availability templates and block off holidays — the slot generation function would hit a database, not a hardcoded constant.
+- **Real availability logic.** `StepTimeSelect` generates the same 14 weekdays and time slots for every physician. A production system would have physicians define weekly availability templates and block off holidays — the slot generation function would hit a database, not a hardcoded constant.
 
 - **Accessibility pass.** Focus management between wizard steps, `aria-live` announcements on status changes, and visible keyboard navigation for the date chip list need work before this meets WCAG 2.1 AA.
