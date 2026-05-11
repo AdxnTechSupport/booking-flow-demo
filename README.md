@@ -23,10 +23,10 @@ MedBook has two views that share a single live bookings state — anything booke
 
 **Patient Flow — 4-step wizard**
 
-1. **Choose a Physician** — Browse six physicians with their specialty, bio, rating, years of experience, and available slot count. Selecting a card moves to the next step.
-2. **Select a Time** — Pick a date from the next 14 weekdays, then choose a morning or afternoon slot. Slots already booked for that physician are automatically filtered out.
-3. **Patient Details** — Form collects name, date of birth, email, phone, reason for visit, and insurance provider (Canadian insurers + No Insurance). Client-side validation runs on submit with inline errors per field.
-4. **Confirmation** — Shows a generated booking ID (`BK-XXXX`), full appointment summary, and a "Pending Confirmation" status badge. A "Book Another Appointment" button resets the wizard.
+1. **Choose a Physician** - Browse six physicians with their specialty, bio, rating, years of experience, and available slot count. Selecting a card moves to the next step.
+2. **Select a Time** - Pick a date from the next 14 weekdays, then choose a morning or afternoon slot. Slots already booked for that physician are automatically filtered out.
+3. **Patient Details** - Form collects name, date of birth, email, phone, reason for visit, and insurance provider (Canadian insurers + No Insurance). Client-side validation runs on submit with inline errors per field.
+4. **Confirmation** - Shows a generated booking ID (`BK-XXXX`), full appointment summary, and a "Pending Confirmation" status badge. A "Book Another Appointment" button resets the wizard.
 
 **Admin Dashboard**
 
