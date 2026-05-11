@@ -50,10 +50,10 @@ The brief didn't ask for persistence, and adding `json-server` or SQLite would'v
 A single `step` integer in `BookingWizard.jsx` drives the whole flow. React Router would've introduced URL management, route params for carrying selected doctor/time between steps, and scroll restoration concerns; none of which add any UX value for a linear four-step form. Using `key={step}` on the step wrapper also gives me the fade-slide animation for free on every transition.
 
 **Manual form validation over react-hook-form**
-Six fields with straightforward required/email checks don't need a library. A plain `validate()` function that returns an errors object is about 20 lines and zero dependencies — and any reviewer can read it without knowing a library's API. I'd reach for react-hook-form if the form had async validation, field arrays, or deeply nested schemas.
+Six fields with straightforward required/email checks don't need a library. A plain `validate()` function that returns an errors object is about 20 lines and zero dependencies - and any reviewer can read it without knowing a library's API. I'd reach for react-hook-form if the form had async validation, field arrays, or deeply nested schemas.
 
 **Seeding the admin view**
-An empty admin dashboard looks broken, not minimal. The eight seeded bookings — spread across all six physicians with a mix of statuses — let you immediately see the filter bar working, watch the stats react when you confirm a booking, and get a real sense of how the product would feel in use.
+An empty admin dashboard looks broken, not minimal. The eight seeded bookings - spread across all six physicians with a mix of statuses - let you immediately see the filter bar working, watch the stats react when you confirm a booking, and get a real sense of how the product would feel in use.
 
 ---
 
