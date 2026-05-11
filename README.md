@@ -19,7 +19,7 @@ Open [http://localhost:5173](http://localhost:5173)
 
 ## What I Built
 
-MedBook has two views that share a single live bookings state — anything booked through the patient flow appears immediately in the admin dashboard.
+MedBook has two views that share a single live bookings state, so anything booked through the patient flow appears immediately in the admin dashboard.
 
 **Patient Flow — 4-step wizard**
 
