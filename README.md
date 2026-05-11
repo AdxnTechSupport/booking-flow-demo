@@ -30,7 +30,7 @@ MedBook has two views that share a single live bookings state — anything booke
 
 **Admin Dashboard**
 
-- Live stats row: Total, Pending, Confirmed, Cancelled — updates instantly on every status change
+- Live stats row: Total, Pending, Confirmed, Cancelled - updates instantly on every status change
 - Filter bar to narrow the list by status
 - Full booking table on desktop; stacked card layout on mobile (no horizontal scroll)
 - Confirm and Cancel actions per booking, correct buttons shown based on current status
