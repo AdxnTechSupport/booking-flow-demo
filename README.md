@@ -1,4 +1,4 @@
-# MedBook — Patient Appointment Booking
+# MedBook - Patient Appointment Booking
 
 A patient-facing appointment booking system with a physician admin dashboard. Built with React + Vite and Tailwind CSS — no backend required.
 
