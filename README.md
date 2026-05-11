@@ -1,59 +1,72 @@
 # MedBook — Patient Appointment Booking
 
-A patient appointment booking system built as a technical work sample. The app includes a polished multi-step patient wizard and a fully functional admin dashboard — no backend required.
+A patient-facing appointment booking system with a physician admin dashboard. Built with React + Vite and Tailwind CSS — no backend required.
 
 ---
 
 ## How to Run
+
+**Requirements:** Node.js 18+
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open [http://localhost:5173](http://localhost:5173)
+Open [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## What I Built
 
-MedBook is a single-page React application with two distinct flows: a patient-facing booking wizard and a physician/admin dashboard. Both share a single in-memory bookings array — appointments created through the patient flow appear instantly in the admin view.
+MedBook has two views that share a single live bookings state — anything booked through the patient flow appears immediately in the admin dashboard.
 
-The patient flow is a four-step wizard: choose a physician, select a date and time slot, fill in personal and insurance details, and receive a confirmation screen with a generated booking ID. The experience is designed to feel calm and trustworthy — a warm off-white palette, editorial serif typography, and soft transitions rather than the sterile or frantic aesthetic common in healthcare UIs.
+**Patient Flow — 4-step wizard**
 
-The admin dashboard gives physicians a live view of all appointments. Stats at the top react to every status change. The filter bar narrows the list by status, and each row's action buttons let a physician confirm or cancel a pending request with a single click. The dashboard is seeded with eight realistic bookings across six physicians so it reads as a live system from the moment it loads — an empty state would have undersold the feature.
+1. **Choose a Physician** — Browse six physicians with their specialty, bio, rating, years of experience, and available slot count. Selecting a card moves to the next step.
+2. **Select a Time** — Pick a date from the next 14 weekdays, then choose a morning or afternoon slot. Slots already booked for that physician are filtered out automatically.
+3. **Patient Details** — Form collects name, date of birth, email, phone, reason for visit, and insurance provider (Canadian insurers + No Insurance). Client-side validation runs on submit with inline errors per field.
+4. **Confirmation** — Shows a generated booking ID (`BK-XXXX`), full appointment summary, and a "Pending Confirmation" status badge. A "Book Another Appointment" button resets the wizard.
+
+**Admin Dashboard**
+
+- Live stats row: Total, Pending, Confirmed, Cancelled — updates instantly on every status change
+- Filter bar to narrow the list by status
+- Full booking table on desktop; stacked card layout on mobile (no horizontal scroll)
+- Confirm and Cancel actions per booking — correct buttons shown based on current status
+- Pre-seeded with 8 realistic bookings so the dashboard looks live on first load
 
 ---
 
 ## Key Technical & Product Decisions
 
-**1. `useState` + custom hook over Redux or Zustand.**
-All booking state lives in `useBookings`, a single custom hook exported from `src/hooks/useBookings.js`. It exposes `bookings`, `addBooking`, and `updateBookingStatus` — a minimal, readable API. The state surface here is genuinely small: one array, two mutations. Pulling in a state library would add indirection, boilerplate, and cognitive overhead with zero functional benefit at this scope. The hook pattern also makes the data flow easy to audit — you can trace every state change from the hook to the component that triggers it.
+**`useState` + custom hook over Redux or Zustand**
+All booking state lives in a single `useBookings` hook that exposes `bookings`, `addBooking`, and `updateBookingStatus`. The state surface is small — one array, two mutations — so a state library would've added boilerplate without any real benefit. Keeping it in a hook also makes the data flow easy to follow: every update traces directly from the hook to the component that triggers it.
 
-**2. Mock data over a local database (SQLite, json-server).**
-The brief asked for a frontend-only demo that can be cloned and run with `npm run dev` and nothing else. A `json-server` backend would require a second terminal process and a coordinated startup sequence; SQLite would require native bindings. Mock data in `src/data/` files costs nothing to run, is instantly reproducible, and is honest about what this exercise is testing. Date-based fields in `mockBookings.js` use absolute ISO strings so the admin table always renders coherently regardless of when you open it.
+**Mock data over a local database**
+The brief didn't ask for persistence, and adding `json-server` or SQLite would've required a second process to run and native bindings to install. Plain JS files in `src/data/` are zero-config and instantly reproducible. The seeded bookings use absolute ISO date strings so the admin table always looks current regardless of when someone runs it.
 
-**3. Controlled step state vs. router-based wizard.**
-The wizard uses a single `step` integer in `BookingWizard.jsx` to determine which step component renders. React Router would have been the instinct for multi-view navigation, but it would also have introduced URL management, route params for passing doctor/date/time selection between steps, and scroll restoration concerns — all complexity that adds no UX value in a linear wizard. Step state in a single parent component keeps the data flow flat and gives the wizard full control over transitions (a `key={step}` on the wrapper triggers the CSS fade-slide-up animation on every step change).
+**Step-based wizard over React Router**
+A single `step` integer in `BookingWizard.jsx` drives the whole flow. React Router would've introduced URL management, route params for carrying selected doctor/time between steps, and scroll restoration concerns — none of which add any UX value for a linear four-step form. Using `key={step}` on the step wrapper also gives me the fade-slide animation for free on every transition.
 
-**4. Manual form validation over react-hook-form.**
-`StepPatientForm.jsx` uses a plain `validate()` function: build an errors object, set it in state, render inline error messages. This is roughly 20 lines and has no dependencies. `react-hook-form` is the right call when you have complex async validation, field arrays, or deeply nested schemas. For six fields with simple required/email checks, a library would obscure more logic than it eliminates. The approach also makes the validation rules immediately readable to any reviewer without knowing the library's API.
+**Manual form validation over react-hook-form**
+Six fields with straightforward required/email checks don't need a library. A plain `validate()` function that returns an errors object is about 20 lines and zero dependencies — and any reviewer can read it without knowing a library's API. I'd reach for react-hook-form if the form had async validation, field arrays, or deeply nested schemas.
 
-**5. Seeding the admin view with realistic data.**
-An admin dashboard with no bookings looks like a broken feature, not a demo. The eight seeded bookings — spread across multiple physicians, statuses, and dates — let a reviewer immediately see the filter bar in action, the stat counters increment when they confirm a booking, and the color-coded status badges at a glance. This is a product judgment call: a technically correct empty state would have made the feature harder to evaluate fairly.
+**Seeding the admin view**
+An empty admin dashboard looks broken, not minimal. The eight seeded bookings — spread across all six physicians with a mix of statuses — let you immediately see the filter bar working, watch the stats react when you confirm a booking, and get a real sense of how the product would feel in use.
 
 ---
 
 ## What I'd Improve With More Time
 
-- **Real authentication.** Currently the admin tab is unprotected. Production would gate it behind a session check — at minimum a separate login route, ideally SSO tied to the physician's identity provider.
+- **Auth separation.** The admin tab is wide open right now. In production it'd sit behind a session check, ideally with a separate physician login rather than just a nav toggle.
 
-- **Persistent storage.** Refreshing the page resets all state. Swapping `useState` for a Supabase client (or even `localStorage`) would make new bookings survive a reload without changing the component API — the hook's return signature is already the right abstraction boundary.
+- **Persistence.** Refreshing resets everything. Swapping the `useState` array for a Supabase table or even `localStorage` would be a small change inside the hook — the component API wouldn't need to touch at all.
 
-- **Transactional email.** The confirmation screen tells the patient their booking is pending, but nothing actually notifies them. Integrating Resend or SendGrid on a lightweight serverless function would close that loop.
+- **Email notifications.** The confirmation screen says "you'll be contacted to confirm" but nothing actually sends. Wiring up Resend on a simple serverless function would close that loop for both booking confirmation and status changes.
 
-- **Calendar view in admin.** A table is the right starting point for information density, but physicians think in terms of their weekly schedule. A month-view calendar with color-coded appointment blocks would be more natural for daily use.
+- **Calendar view in admin.** The table works well for dense information, but physicians think in schedules. A weekly calendar view with colour-coded appointment blocks would be more natural for daily use.
 
-- **Real availability logic.** `StepTimeSelect` generates the same 14 weekdays and time slots for every physician. A production system would have physicians define weekly availability templates and block off holidays — the slot generation function would hit a database, not a hardcoded constant.
+- **Real availability logic.** Every physician currently shows the same 14 weekdays and time slots. A real system would let physicians set recurring weekly availability and block off time off — that logic would live in the database, not a hardcoded constant.
 
-- **Accessibility pass.** Focus management between wizard steps, `aria-live` announcements on status changes, and visible keyboard navigation for the date chip list need work before this meets WCAG 2.1 AA.
+- **Accessibility.** Focus management between wizard steps, `aria-live` regions on status updates, and proper keyboard nav for the date grid are the main gaps before this is production-ready.
